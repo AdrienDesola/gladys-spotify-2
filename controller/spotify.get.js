@@ -17,7 +17,10 @@ module.exports = (request, response, next) => {
     };
   })
   .then(Request.post)
-  .then(({ access_token }) => shared.access_token = access_token)
+  .then(({access_token, refresh_token}) => {
+    shared.access_token = access_token
+    return gladys.param.setValue({ name: 'spotify_refresh_token', value: refresh_token })
+  })
   .then(success => response.send('success'))
   .catch(error => response.send(`SPOTIFY ERROR : ${error.toString()}`))
 }
